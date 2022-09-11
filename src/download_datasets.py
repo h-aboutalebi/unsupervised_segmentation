@@ -9,9 +9,9 @@ import wget
 def my_app(cfg: DictConfig) -> None:
     pytorch_data_dir = cfg.pytorch_data_dir
     dataset_names = [
+        "cocostuff",
         "potsdam",
         "cityscapes",
-        "cocostuff",
         "potsdamraw"]
     url_base = "https://marhamilresearch4.blob.core.windows.net/stego-public/pytorch_data/"
 

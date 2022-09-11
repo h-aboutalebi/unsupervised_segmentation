@@ -1,5 +1,5 @@
 output_root: '../'
-pytorch_data_dir: '/datadrive/pytorch-data/'
+pytorch_data_dir: '/home/hossein/data/segmentation'
 experiment_name: "cocostuff"
 res: 320
 batch_size: 8
@@ -9,6 +9,7 @@ run_crf: True
 run_prediction: True
 dark_mode: True
 use_ddp: False
+cuda_n: "1"
 
 model_paths:
   - "../saved_models/cocostuff27_vit_base_5.ckpt"

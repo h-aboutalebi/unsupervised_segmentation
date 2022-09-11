@@ -4,6 +4,7 @@ experiment_name: "exp1"
 log_dir: "cocostuff27"
 azureml_logging: True
 submitting_to_aml: False
+cuda_n: "1"
 
 # Loader params
 num_workers: 24

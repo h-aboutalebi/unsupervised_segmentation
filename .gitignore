@@ -3,3 +3,8 @@ data/*
 src/.env
 results/predictions/*
 src/iarpa
+src/saved_models/
+*.pyc
+*.ckpt
+*.pth
+*.log

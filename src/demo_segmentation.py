@@ -33,6 +33,8 @@ class UnlabeledImageFolder(Dataset):
 
 @hydra.main(config_path="configs", config_name="demo_config.yml")
 def my_app(cfg: DictConfig) -> None:
+    device = torch.device("cuda:" + cfg.cuda_n if True else "cpu")
+    print("device is set for: {}".format(device))
     result_dir = "../results/predictions/{}".format(cfg.experiment_name)
     os.makedirs(result_dir, exist_ok=True)
     os.makedirs(join(result_dir, "cluster"), exist_ok=True)
@@ -50,7 +52,7 @@ def my_app(cfg: DictConfig) -> None:
                         shuffle=False, num_workers=cfg.num_workers,
                         pin_memory=True, collate_fn=flexible_collate)
 
-    model.eval().cuda()
+    model.eval().to(device)
     if cfg.use_ddp:
         par_model = torch.nn.DataParallel(model.net)
     else:
@@ -58,14 +60,16 @@ def my_app(cfg: DictConfig) -> None:
 
     for i, (img, name) in enumerate(tqdm(loader)):
         with torch.no_grad():
-            img = img.cuda()
+            img = img.to(device)
             feats, code1 = par_model(img)
             feats, code2 = par_model(img.flip(dims=[3]))
             code = (code1 + code2.flip(dims=[3])) / 2
 
-            code = F.interpolate(code, img.shape[-2:], mode='bilinear', align_corners=False)
+            code = F.interpolate(
+                code, img.shape[-2:], mode='bilinear', align_corners=False)
 
-            linear_probs = torch.log_softmax(model.linear_probe(code), dim=1).cpu()
+            linear_probs = torch.log_softmax(
+                model.linear_probe(code), dim=1).cpu()
             cluster_probs = model.cluster_probe(code, 2, log_probs=True).cpu()
 
             for j in range(img.shape[0]):
@@ -74,8 +78,10 @@ def my_app(cfg: DictConfig) -> None:
                 cluster_crf = dense_crf(single_img, cluster_probs[j]).argmax(0)
 
                 new_name = ".".join(name[j].split(".")[:-1]) + ".png"
-                Image.fromarray(linear_crf.astype(np.uint8)).save(join(result_dir, "linear", new_name))
-                Image.fromarray(cluster_crf.astype(np.uint8)).save(join(result_dir, "cluster", new_name))
+                Image.fromarray(linear_crf.astype(np.uint8)).save(
+                    join(result_dir, "linear", new_name))
+                Image.fromarray(cluster_crf.astype(np.uint8)).save(
+                    join(result_dir, "cluster", new_name))
 
 
 if __name__ == "__main__":
