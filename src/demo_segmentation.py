@@ -78,9 +78,9 @@ def my_app(cfg: DictConfig) -> None:
                 cluster_crf = dense_crf(single_img, cluster_probs[j]).argmax(0)
 
                 new_name = ".".join(name[j].split(".")[:-1]) + ".png"
-                Image.fromarray(linear_crf.astype(np.uint8)).save(
+                Image.fromarray((linear_crf* 100).astype(np.uint8)).save(
                     join(result_dir, "linear", new_name))
-                Image.fromarray(cluster_crf.astype(np.uint8)).save(
+                Image.fromarray((cluster_crf* 100).astype(np.uint8)).save(
                     join(result_dir, "cluster", new_name))
 
 
