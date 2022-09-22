@@ -1,6 +1,7 @@
 from utils import *
 from modules import *
 from data import *
+import warnings
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
 from datetime import datetime
@@ -499,5 +500,7 @@ def my_app(cfg: DictConfig) -> None:
 
 
 if __name__ == "__main__":
+    #IMPORTANT: Remove the following line in case you want to see warning messages
+    warnings.filterwarnings('ignore') 
     prep_args()
     my_app()
