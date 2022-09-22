@@ -11,6 +11,22 @@
             "program": "/home/hossein/github/STEGO/src/demo_segmentation.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "train_segmentation.py",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/hossein/github/STEGO/src/train_segmentation.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "precompute_knns.py",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/hossein/github/STEGO/src/precompute_knns.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }

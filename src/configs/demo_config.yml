@@ -1,12 +1,12 @@
 output_root: '../'
 model_path: "/home/hossein/github/STEGO/saved_models/cocostuff27_vit_base_5.ckpt"
-image_dir: "/home/hossein/data/segmentation/cocostuff/images/val2017"
+image_dir: "/home/hossein/data/mahdi_dataset/truck"
 experiment_name: "cocostuff_val"
 res: 320
-batch_size: 8
+batch_size: 16
 num_workers: 24
 use_ddp: False
-cuda_n: "1"
+cuda_n: "7"
 
 hydra:
   run:

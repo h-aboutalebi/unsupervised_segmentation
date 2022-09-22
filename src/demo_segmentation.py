@@ -35,11 +35,11 @@ class UnlabeledImageFolder(Dataset):
 def my_app(cfg: DictConfig) -> None:
     device = torch.device("cuda:" + cfg.cuda_n if True else "cpu")
     print("device is set for: {}".format(device))
-    result_dir = "/home/hossein/github/STEGO/results/predictions/{}".format(cfg.experiment_name)
+    result_dir = "/home/hossein/github/STEGO/results/predictions/truck/{}".format(cfg.experiment_name)
     os.makedirs(result_dir, exist_ok=True)
     os.makedirs(join(result_dir, "cluster"), exist_ok=True)
     os.makedirs(join(result_dir, "linear"), exist_ok=True)
-
+ 
     model = LitUnsupervisedSegmenter.load_from_checkpoint(cfg.model_path)
     print(OmegaConf.to_yaml(model.cfg))
 
