@@ -46,7 +46,7 @@ class DinoFeaturizer(nn.Module):
 
         if cfg.pretrained_weights is not None:
             state_dict = torch.load(cfg.pretrained_weights, map_location="cpu")
-            state_dict = state_dict["teacher"]
+            # state_dict = state_dict["teacher"] #TODO: check if this is needed Hossein
             # remove `module.` prefix
             state_dict = {k.replace("module.", ""): v for k,
                           v in state_dict.items()}

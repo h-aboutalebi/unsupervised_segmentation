@@ -462,6 +462,8 @@ def my_app(cfg: DictConfig) -> None:
     val_loader = DataLoader(val_dataset, val_batch_size, shuffle=False, num_workers=cfg.num_workers, pin_memory=True)
 
     model = LitUnsupervisedSegmenter(train_dataset.n_classes, cfg, cfg.cuda_n)
+    if cfg.resume_from_checkpoint:
+        model = LitUnsupervisedSegmenter.load_from_checkpoint(cfg.model_path)
 
     tb_logger = TensorBoardLogger(
         join(log_dir, name),
