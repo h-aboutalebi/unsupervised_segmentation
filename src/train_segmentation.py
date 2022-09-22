@@ -98,7 +98,7 @@ class LitUnsupervisedSegmenter(pl.LightningModule):
 
         self.automatic_optimization = False
 
-        if self.cfg.dataset_name.startswith("cityscapes"):
+        if self.cfg.dataset_name.startswith("cityscapes"): #TODO: make this more general "or self.cfg.dir_dataset_name == "truck"" Hossein
             self.label_cmap = create_cityscapes_colormap()
         else:
             self.label_cmap = create_pascal_label_colormap()
@@ -462,8 +462,9 @@ def my_app(cfg: DictConfig) -> None:
     val_loader = DataLoader(val_dataset, val_batch_size, shuffle=False, num_workers=cfg.num_workers, pin_memory=True)
 
     model = LitUnsupervisedSegmenter(train_dataset.n_classes, cfg, cfg.cuda_n)
-    if cfg.resume_from_checkpoint:
-        model = LitUnsupervisedSegmenter.load_from_checkpoint(cfg.model_path)
+    # TODO: add checkpointing Hossein
+    # if cfg.resume_from_checkpoint:
+    #     model = LitUnsupervisedSegmenter.load_from_checkpoint(cfg.model_path)
 
     tb_logger = TensorBoardLogger(
         join(log_dir, name),

@@ -30,7 +30,7 @@ loader_crop_type: "center"
 extra_clusters: 0
 use_true_labels: False
 use_recalibrator: False
-model_type: "vit_small"
+model_type: "vit_small" #TODO: add other models like base Hossein
 arch: "dino"
 use_fit_model: False
 dino_feat_type: "feat"
