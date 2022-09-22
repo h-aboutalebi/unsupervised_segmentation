@@ -8,3 +8,5 @@ src/saved_models/
 *.ckpt
 *.pth
 *.log
+src/saved_models/trained_custom/logs/
+src/saved_models/trained_custom/
