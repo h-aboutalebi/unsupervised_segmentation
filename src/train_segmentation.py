@@ -130,7 +130,7 @@ class LitUnsupervisedSegmenter(pl.LightningModule):
         feats, code = self.net(img)
         if self.cfg.correspondence_weight > 0:
             feats_pos, code_pos = self.net(img_pos)
-        log_args = dict(sync_dist=False, rank_zero_only=True)
+        log_args = dict(sync_dist=False)
 
         if self.cfg.use_true_labels:
             signal = one_hot_feats(label + 1, self.n_classes + 1)
@@ -387,6 +387,7 @@ class LitUnsupervisedSegmenter(pl.LightningModule):
 def my_app(cfg: DictConfig) -> None:
     OmegaConf.set_struct(cfg, False)
     print(OmegaConf.to_yaml(cfg))
+    device = torch.device("cuda:" + cfg.cuda_n if True else "cpu")
     pytorch_data_dir = cfg.pytorch_data_dir
     data_dir = join(cfg.output_root, "data")
     log_dir = join(cfg.output_root, "logs")
@@ -459,7 +460,7 @@ def my_app(cfg: DictConfig) -> None:
 
     val_loader = DataLoader(val_dataset, val_batch_size, shuffle=False, num_workers=cfg.num_workers, pin_memory=True)
 
-    model = LitUnsupervisedSegmenter(train_dataset.n_classes, cfg)
+    model = LitUnsupervisedSegmenter(train_dataset.n_classes, cfg).to(device)
 
     tb_logger = TensorBoardLogger(
         join(log_dir, name),
@@ -473,7 +474,7 @@ def my_app(cfg: DictConfig) -> None:
             gpu_args.pop("val_check_interval")
 
     else:
-        gpu_args = dict(gpus=-1, accelerator='ddp', val_check_interval=cfg.val_freq)
+        gpu_args = dict(gpus=[int(cfg.cuda_n)], val_check_interval=cfg.val_freq)
         # gpu_args = dict(gpus=1, accelerator='ddp', val_check_interval=cfg.val_freq)
 
         if gpu_args["val_check_interval"] > len(train_loader) // 4:
