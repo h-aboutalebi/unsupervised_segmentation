@@ -16,11 +16,11 @@ class LambdaLayer(nn.Module):
 
 class DinoFeaturizer(nn.Module):
 
-    def __init__(self, dim, cfg):
+    def __init__(self, dim, cfg,device="1"):
         super().__init__()
         self.cfg = cfg
         self.dim = dim
-        self.device = torch.device("cuda:" + "1" if True else "cpu")
+        self.device = torch.device("cuda:"+device)
         patch_size = self.cfg.dino_patch_size
         self.patch_size = patch_size
         self.feat_type = self.cfg.dino_feat_type

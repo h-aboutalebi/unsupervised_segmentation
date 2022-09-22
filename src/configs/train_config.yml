@@ -1,10 +1,10 @@
-output_root: '../'
+output_root: '/home/hossein/github/STEGO/saved_models/trained_custom'
 pytorch_data_dir: '/home/hossein/data/mahdi_dataset/directory'
 experiment_name: "exp1"
 log_dir: "cocostuff27"
 azureml_logging: False
 submitting_to_aml: False
-cuda_n: "1"
+cuda_n: "3"
 
 # Loader params
 num_workers: 24

@@ -52,7 +52,7 @@ def get_class_labels(dataset_name):
 
 
 class LitUnsupervisedSegmenter(pl.LightningModule):
-    def __init__(self, n_classes, cfg):
+    def __init__(self, n_classes, cfg, device="1"):
         super().__init__()
         self.cfg = cfg
         self.n_classes = n_classes
@@ -67,7 +67,7 @@ class LitUnsupervisedSegmenter(pl.LightningModule):
             cut_model = load_model(cfg.model_type, data_dir).cuda()
             self.net = FeaturePyramidNet(cfg.granularity, cut_model, dim, cfg.continuous)
         elif cfg.arch == "dino":
-            self.net = DinoFeaturizer(dim, cfg)
+            self.net = DinoFeaturizer(dim, cfg, device=device)
         else:
             raise ValueError("Unknown arch {}".format(cfg.arch))
 
@@ -461,7 +461,7 @@ def my_app(cfg: DictConfig) -> None:
 
     val_loader = DataLoader(val_dataset, val_batch_size, shuffle=False, num_workers=cfg.num_workers, pin_memory=True)
 
-    model = LitUnsupervisedSegmenter(train_dataset.n_classes, cfg).to(device)
+    model = LitUnsupervisedSegmenter(train_dataset.n_classes, cfg, cfg.cuda_n)
 
     tb_logger = TensorBoardLogger(
         join(log_dir, name),
