@@ -82,13 +82,14 @@ def my_app(cfg: DictConfig) -> None:
                 generate_image(model, single_img, linear_crf, cluster_crf,join(result_dir, new_name))
                 
 def generate_image(model, img, linear_crf, cluster_crf, name):
-    fig, ax = plt.subplots(1,3, figsize=(5*3,5))
+    fig, ax = plt.subplots(1,2, figsize=(5*5,10))
     ax[0].imshow(unnorm(img).permute(1,2,0).cpu())
     ax[0].set_title("Image")
-    ax[1].imshow(model.label_cmap[cluster_crf])
-    ax[1].set_title("Cluster Predictions")
-    ax[2].imshow(model.label_cmap[linear_crf])
-    ax[2].set_title("Linear Probe Predictions")
+    #Removed cluster_crf for now
+    # ax[2].imshow(model.label_cmap[cluster_crf])
+    # ax[2].set_title("Cluster Predictions")
+    ax[1].imshow(model.label_cmap[linear_crf])
+    ax[1].set_title("Linear Probe Predictions")
     remove_axes(ax)
     fig.savefig(name)
 

@@ -1,3 +1,5 @@
+#Important: Run this script with the following command: 'CUDA_VISIBLE_DEVICES=3,4 python src/precompute_knns.py' 
+
 from data import ContrastiveSegDataset
 from modules import *
 import os
@@ -12,11 +14,11 @@ from pytorch_lightning.utilities.seed import seed_everything
 from tqdm import tqdm
 
 
-def get_feats(model, loader, device="cuda:0"):
+def get_feats(model, loader):
     all_feats = []
     for pack in tqdm(loader):
         img = pack["img"]
-        feats = F.normalize(model.forward(img.to(device)).mean([2, 3]), dim=1)
+        feats = F.normalize(model.forward(img.cuda()).mean([2, 3]), dim=1)
         all_feats.append(feats.to("cpu", non_blocking=True))
     return torch.cat(all_feats, dim=0).contiguous()
 
@@ -24,7 +26,6 @@ def get_feats(model, loader, device="cuda:0"):
 @hydra.main(config_path="configs", config_name="train_config.yml")
 def my_app(cfg: DictConfig) -> None:
     print(OmegaConf.to_yaml(cfg))
-    device = torch.device("cuda:" + cfg.cuda_n if True else "cpu")
     pytorch_data_dir = cfg.pytorch_data_dir
     data_dir = join(cfg.output_root, "data")
     log_dir = join(cfg.output_root, "logs")
@@ -54,10 +55,10 @@ def my_app(cfg: DictConfig) -> None:
         no_ap_model = torch.nn.Sequential(
             DinoFeaturizer(20, cfg),  # dim doesent matter
             LambdaLayer(lambda p: p[0]),
-        ).to(device)
+        ).cuda()
     else:
-        cut_model = load_model(cfg.model_type, join(cfg.output_root, "data")).to(device)
-        no_ap_model = nn.Sequential(*list(cut_model.children())[:-1]).to(device)
+        cut_model = load_model(cfg.model_type, join(cfg.output_root, "data")).cuda()
+        no_ap_model = nn.Sequential(*list(cut_model.children())[:-1]).cuda()
     par_model = torch.nn.DataParallel(no_ap_model)
 
     for crop_type in crop_types:
@@ -83,7 +84,7 @@ def my_app(cfg: DictConfig) -> None:
                     loader = DataLoader(dataset, 256, shuffle=False, num_workers=cfg.num_workers, pin_memory=False)
 
                     with torch.no_grad():
-                        normed_feats = get_feats(no_ap_model, loader, device=device)
+                        normed_feats = get_feats(par_model, loader)
                         all_nns = []
                         step = normed_feats.shape[0] // n_batches
                         print(normed_feats.shape)

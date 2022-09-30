@@ -5,7 +5,7 @@ image_dir: "/home/hossein/data/mahdi_dataset/directory/truck/imgs/val"
 # image_dir: "/home/hossein/data/segmentation/cocostuff/images/val2017"
 experiment_name: "truck_val"
 res: 560
-batch_size: 2
+batch_size: 1
 num_workers: 2
 use_ddp: False
 cuda_n: "3"
