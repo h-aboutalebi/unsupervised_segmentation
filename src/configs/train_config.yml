@@ -6,7 +6,7 @@ experiment_name: "exp1"
 log_dir: "cocostuff27"
 azureml_logging: False
 submitting_to_aml: False
-cuda_n: "1"
+cuda_n: "7"
 
 # Loader params
 num_workers: 24
@@ -18,19 +18,20 @@ dataset_name: "directory"
 
 # Used if dataset_name is "directory"
 dir_dataset_name: "truck"
-dir_dataset_n_classes: 30
+dir_dataset_n_classes: 27
 
 has_labels: False
 crop_type: "None"
 crop_ratio: .5
-res: 224
+res: 320
 loader_crop_type: "center"
 
 # Model Params
 extra_clusters: 0
 use_true_labels: False
 use_recalibrator: False
-model_type: "vit_small" #TODO: add other models like base Hossein
+# model_type: "vit_small" #TODO: add other models like base Hossein
+model_type: "vit_base"
 arch: "dino"
 use_fit_model: False
 dino_feat_type: "feat"

@@ -1,13 +1,14 @@
 output_root: '../'
-# model_path: "/home/hossein/github/STEGO/saved_models/cocostuff27_vit_base_5.ckpt"
-model_path: "/home/hossein/github/STEGO/saved_models/trained_custom/checkpoints/cocostuff27/directory_exp1_date_Sep22_16-55-50/epoch=4-step=399.ckpt"
+model_path: "/home/hossein/github/STEGO/saved_models/cocostuff27_vit_base_5.ckpt"
+# model_path: "/home/hossein/github/STEGO/saved_models/trained_custom/checkpoints/cocostuff27/directory_exp1_date_Sep22_16-55-50/epoch=4-step=399.ckpt"
 image_dir: "/home/hossein/data/mahdi_dataset/directory/truck/imgs/val"
-experiment_name: "cocostuff_val"
-res: 320
-batch_size: 16
-num_workers: 24
+# image_dir: "/home/hossein/data/segmentation/cocostuff/images/val2017"
+experiment_name: "truck_val"
+res: 560
+batch_size: 2
+num_workers: 2
 use_ddp: False
-cuda_n: "7"
+cuda_n: "3"
 
 hydra:
   run:

@@ -1,7 +1,9 @@
 from modules import *
 import hydra
+import cv2
 import torch.multiprocessing
 from PIL import Image
+from utils import *
 from crf import dense_crf
 from omegaconf import DictConfig, OmegaConf
 from torch.utils.data import DataLoader, Dataset
@@ -9,6 +11,8 @@ from train_segmentation import LitUnsupervisedSegmenter
 from tqdm import tqdm
 import random
 torch.multiprocessing.set_sharing_strategy('file_system')
+import matplotlib.pyplot as plt
+from utils import unnorm, remove_axes
 
 
 class UnlabeledImageFolder(Dataset):
@@ -37,8 +41,6 @@ def my_app(cfg: DictConfig) -> None:
     print("device is set for: {}".format(device))
     result_dir = "/home/hossein/github/STEGO/results/predictions/truck/{}".format(cfg.experiment_name)
     os.makedirs(result_dir, exist_ok=True)
-    os.makedirs(join(result_dir, "cluster"), exist_ok=True)
-    os.makedirs(join(result_dir, "linear"), exist_ok=True)
  
     model = LitUnsupervisedSegmenter.load_from_checkpoint(cfg.model_path)
     print(OmegaConf.to_yaml(model.cfg))
@@ -76,12 +78,19 @@ def my_app(cfg: DictConfig) -> None:
                 single_img = img[j].cpu()
                 linear_crf = dense_crf(single_img, linear_probs[j]).argmax(0)
                 cluster_crf = dense_crf(single_img, cluster_probs[j]).argmax(0)
-
                 new_name = ".".join(name[j].split(".")[:-1]) + ".png"
-                Image.fromarray((linear_crf* 100).astype(np.uint8)).save(
-                    join(result_dir, "linear", new_name))
-                Image.fromarray((cluster_crf* 100).astype(np.uint8)).save(
-                    join(result_dir, "cluster", new_name))
+                generate_image(model, single_img, linear_crf, cluster_crf,join(result_dir, new_name))
+                
+def generate_image(model, img, linear_crf, cluster_crf, name):
+    fig, ax = plt.subplots(1,3, figsize=(5*3,5))
+    ax[0].imshow(unnorm(img).permute(1,2,0).cpu())
+    ax[0].set_title("Image")
+    ax[1].imshow(model.label_cmap[cluster_crf])
+    ax[1].set_title("Cluster Predictions")
+    ax[2].imshow(model.label_cmap[linear_crf])
+    ax[2].set_title("Linear Probe Predictions")
+    remove_axes(ax)
+    fig.savefig(name)
 
 
 if __name__ == "__main__":
