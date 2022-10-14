@@ -1,3 +1,5 @@
+from utils import unnorm, remove_axes
+import matplotlib.pyplot as plt
 from modules import *
 import hydra
 import cv2
@@ -11,8 +13,6 @@ from train_segmentation import LitUnsupervisedSegmenter
 from tqdm import tqdm
 import random
 torch.multiprocessing.set_sharing_strategy('file_system')
-import matplotlib.pyplot as plt
-from utils import unnorm, remove_axes
 
 
 class UnlabeledImageFolder(Dataset):
@@ -39,10 +39,12 @@ class UnlabeledImageFolder(Dataset):
 def my_app(cfg: DictConfig) -> None:
     device = torch.device("cuda:" + cfg.cuda_n if True else "cpu")
     print("device is set for: {}".format(device))
-    result_dir = "/home/hossein/github/STEGO/results/predictions/truck/{}".format(cfg.experiment_name)
+    result_dir = "/home/hossein/github/STEGO/results/predictions/truck/{}".format(
+        cfg.experiment_name)
     os.makedirs(result_dir, exist_ok=True)
- 
-    model = LitUnsupervisedSegmenter.load_from_checkpoint(cfg.model_path)
+
+    model = LitUnsupervisedSegmenter.load_from_checkpoint(
+        cfg.model_path, device=cfg.cuda_n)
     print(OmegaConf.to_yaml(model.cfg))
 
     dataset = UnlabeledImageFolder(
@@ -79,13 +81,15 @@ def my_app(cfg: DictConfig) -> None:
                 linear_crf = dense_crf(single_img, linear_probs[j]).argmax(0)
                 cluster_crf = dense_crf(single_img, cluster_probs[j]).argmax(0)
                 new_name = ".".join(name[j].split(".")[:-1]) + ".png"
-                generate_image(model, single_img, linear_crf, cluster_crf,join(result_dir, new_name))
-                
+                generate_image(model, single_img, linear_crf,
+                               cluster_crf, join(result_dir, new_name))
+
+
 def generate_image(model, img, linear_crf, cluster_crf, name):
-    fig, ax = plt.subplots(1,2, figsize=(5*5,10))
-    ax[0].imshow(unnorm(img).permute(1,2,0).cpu())
+    fig, ax = plt.subplots(1, 2, figsize=(5*5, 10))
+    ax[0].imshow(unnorm(img).permute(1, 2, 0).cpu())
     ax[0].set_title("Image")
-    #Removed cluster_crf for now
+    # Removed cluster_crf for now
     # ax[2].imshow(model.label_cmap[cluster_crf])
     # ax[2].set_title("Cluster Predictions")
     ax[1].imshow(model.label_cmap[linear_crf])
