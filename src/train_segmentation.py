@@ -462,10 +462,9 @@ def my_app(cfg: DictConfig) -> None:
     val_loader = DataLoader(val_dataset, val_batch_size, shuffle=False, num_workers=cfg.num_workers, pin_memory=True)
 
     model = LitUnsupervisedSegmenter(train_dataset.n_classes, cfg, cfg.cuda_n)
-    # TODO: add checkpointing Hossein
-    # if cfg.resume_from_checkpoint:
-    #     model = LitUnsupervisedSegmenter.load_from_checkpoint(cfg.model_path)
-
+    # To check if the model has loaded correctly test "list(model.parameters())[0]" 
+    # when you pass "~" instead of current path for "pretrained_weights" in config file
+    model=model.to(device)
     tb_logger = TensorBoardLogger(
         join(log_dir, name),
         default_hp_metric=False
