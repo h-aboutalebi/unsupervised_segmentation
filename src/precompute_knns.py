@@ -1,7 +1,10 @@
-#Important: Run this script with the following command: 'CUDA_VISIBLE_DEVICES=3,4 python src/precompute_knns.py' 
+#Important: Run this script with the following command: 'CUDA_VISIBLE_DEVICES=1,2,3,4 python src/precompute_knns.py' 
 
 from data import ContrastiveSegDataset
 from modules import *
+#Use the following line to load the model (in case you have truncated image error)
+# from PIL import ImageFile 
+# ImageFile.LOAD_TRUNCATED_IMAGES = True
 import os
 from os.path import join
 import hydra

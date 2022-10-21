@@ -1,5 +1,5 @@
 output_root: '/home/hossein/github/STEGO/saved_models/trained_custom'
-pytorch_data_dir: '/home/hossein/data/mahdi_dataset/directory'
+pytorch_data_dir: '/home/hossein/data/mahdi_dataset/train_truck/directory' #/home/hossein/data/mahdi_dataset/directory
 model_path: '/home/hossein/github/STEGO/saved_models/cityscapes_vit_base_1.ckpt'
 resume_from_checkpoint: True
 experiment_name: "exp1"
@@ -11,7 +11,7 @@ cuda_n: "3"
 # Loader params
 num_workers: 2
 max_steps: 5000
-batch_size: 8
+batch_size: 32
 
 num_neighbors: 7
 dataset_name: "directory"
