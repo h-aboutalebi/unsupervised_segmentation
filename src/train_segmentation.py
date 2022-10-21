@@ -2,6 +2,8 @@ from utils import *
 from modules import *
 from data import *
 import warnings
+# from PIL import ImageFile 
+# ImageFile.LOAD_TRUNCATED_IMAGES = True
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
 from datetime import datetime

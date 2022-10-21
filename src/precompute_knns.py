@@ -83,7 +83,7 @@ def my_app(cfg: DictConfig) -> None:
                         target_transform=get_transform(res, True, "center"),
                         cfg=cfg,
                     )
-
+                    
                     loader = DataLoader(dataset, 256, shuffle=False, num_workers=cfg.num_workers, pin_memory=False)
 
                     with torch.no_grad():
