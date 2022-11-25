@@ -1,5 +1,6 @@
 models/*
 data/*
+Bestie/BESTIE/PAM/checkpoints/*
 src/.env
 results/predictions/*
 src/iarpa

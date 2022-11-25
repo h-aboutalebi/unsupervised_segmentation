@@ -1,32 +1,53 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "demo_segmentation.py",
-            "type": "python",
-            "request": "launch",
-            "program": "/home/hossein/github/STEGO/src/demo_segmentation.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "point_extraction.py",
+      "type": "python",
+      "request": "launch",
+      "program": "/home/hossein/github/STEGO/Bestie/BESTIE/PAM/point_extraction.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+        "env": {
+            "CUDA_VISIBLE_DEVICES": "2"
         },
-        {
-            "name": "train_segmentation.py",
-            "type": "python",
-            "request": "launch",
-            "program": "/home/hossein/github/STEGO/src/train_segmentation.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "precompute_knns.py",
-            "type": "python",
-            "request": "launch",
-            "program": "/home/hossein/github/STEGO/src/precompute_knns.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        }
-    ]
+      "args": [
+        "--root_dir",
+        "/home/hossein/github/yolact/content/test_images",
+        "--alpha",
+        "0.7",
+        "--checkpoint",
+        "/home/hossein/github/STEGO/Bestie/BESTIE/PAM/checkpoints/PAM.pth",
+        "--save_dir",
+        "/home/hossein/github/STEGO/results/PAM"
+    ],
+    },
+    {
+      "name": "demo_segmentation.py",
+      "type": "python",
+      "request": "launch",
+      "program": "/home/hossein/github/STEGO/src/demo_segmentation.py",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "train_segmentation.py",
+      "type": "python",
+      "request": "launch",
+      "program": "/home/hossein/github/STEGO/src/train_segmentation.py",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "precompute_knns.py",
+      "type": "python",
+      "request": "launch",
+      "program": "/home/hossein/github/STEGO/src/precompute_knns.py",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
 }
