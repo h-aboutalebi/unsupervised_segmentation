@@ -11,9 +11,9 @@
       "program": "/home/hossein/github/STEGO/Bestie/BESTIE/PAM/point_extraction.py",
       "console": "integratedTerminal",
       "justMyCode": true,
-        "env": {
-            "CUDA_VISIBLE_DEVICES": "2"
-        },
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "2"
+      },
       "args": [
         "--root_dir",
         "/home/hossein/github/yolact/content/test_images",
@@ -23,7 +23,7 @@
         "/home/hossein/github/STEGO/Bestie/BESTIE/PAM/checkpoints/PAM.pth",
         "--save_dir",
         "/home/hossein/github/STEGO/results/PAM"
-    ],
+      ]
     },
     {
       "name": "demo_segmentation.py",
@@ -32,6 +32,27 @@
       "program": "/home/hossein/github/STEGO/src/demo_segmentation.py",
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "dino.py",
+      "type": "python",
+      "request": "launch",
+      "program": "/home/hossein/github/STEGO/src/visualize_attention_dino.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "2"
+      },
+      "args": [
+        "--arch",
+        "vit_base",
+        "--pretrained_weights",
+        "/home/hossein/github/STEGO/saved_models/cocostuff27_vit_base_5.ckpt",
+        "--image_path",
+        "/home/hossein/data/segmentation/cocostuff/images/val2017/000000384661.jpg",
+        "--output_dir",
+        "/home/hossein/github/STEGO/results/Dino"
+      ]
     },
     {
       "name": "train_segmentation.py",
