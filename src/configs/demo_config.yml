@@ -1,7 +1,7 @@
 output_root: '../'
 model_path: "/home/hossein/github/STEGO/saved_models/cocostuff27_vit_base_5.ckpt"
 # model_path: "/home/hossein/github/STEGO/saved_models/cityscapes_vit_base_1.ckpt"
-# model_path: "/home/hossein/github/STEGO/saved_models/trained_custom/checkpoints/cocostuff27/directory_exp1_date_Oct21_08-46-07/epoch=7-step=799.ckpt"
+# model_path: "/home/hossein/github/STEGO/saved_models/dino_vitbase8_pretrain_full_checkpoint.pth"
 image_dir: "/home/hossein/data/mahdi_dataset/train_truck/directory/truck/imgs/val" #/home/hossein/data/mahdi_dataset/directory/truck/imgs/val
 # image_dir: "/home/hossein/data/segmentation/cocostuff/images/val2017"
 experiment_name: "truck_val"

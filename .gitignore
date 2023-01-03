@@ -3,6 +3,7 @@ data/*
 Bestie/*
 src/.env
 results/predictions/*
+results/Dino/*
 src/iarpa
 saved_models/
 *.pyc
